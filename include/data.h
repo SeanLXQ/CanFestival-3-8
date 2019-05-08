@@ -55,8 +55,8 @@ typedef struct struct_CO_Data CO_Data;
  */
 struct struct_CO_Data {
 	/* Object dictionary */
-	UNS8 *bDeviceNodeId;
-	const indextable *objdict;
+	UNS8 *bDeviceNodeId; /*节点id*/
+	const indextable *objdict;  /*canopen索引*/
 	s_PDO_status *PDO_status;
 	TIMER_HANDLE *RxPDO_EventTimers;
 	void (*RxPDO_EventTimers_Handler)(CO_Data*, UNS32);
@@ -73,10 +73,10 @@ struct struct_CO_Data {
 	/* State machine */
 	e_nodeState nodeState;
 	s_state_communication CurrentCommunicationState;
-	initialisation_t initialisation;
-	preOperational_t preOperational;
-	operational_t operational;
-	stopped_t stopped;
+	initialisation_t initialisation;/*回调函数*/
+	preOperational_t preOperational;/*回调函数*/
+	operational_t operational;/*回调函数*/
+	stopped_t stopped;/*回调函数*/
      void (*NMT_Slave_Node_Reset_Callback)(CO_Data*);
      void (*NMT_Slave_Communications_Reset_Callback)(CO_Data*);
      
@@ -86,7 +86,7 @@ struct struct_CO_Data {
 	TIMER_HANDLE *ConsumerHeartBeatTimers;
 	UNS16 *ProducerHeartBeatTime;
 	TIMER_HANDLE ProducerHeartBeatTimer;
-	heartbeatError_t heartbeatError;
+	heartbeatError_t heartbeatError;/*回调函数*/
 	e_nodeState NMTable[NMT_MAX_NODE_ID]; 
 
 	/* NMT-nodeguarding */
@@ -102,8 +102,8 @@ struct struct_CO_Data {
 	UNS32 *COB_ID_Sync;
 	UNS32 *Sync_Cycle_Period;
 	/*UNS32 *Sync_window_length;;*/
-	post_sync_t post_sync;
-	post_TPDO_t post_TPDO;
+	post_sync_t post_sync;/*回调函数*/
+	post_TPDO_t post_TPDO;/*回调函数*/
 	post_SlaveBootup_t post_SlaveBootup;
     post_SlaveStateChange_t post_SlaveStateChange;
 	

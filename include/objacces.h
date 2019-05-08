@@ -195,6 +195,9 @@ UNS32 _getODentry( CO_Data* d,
  * - OD_SUCCESSFUL is returned upon success. 
  * - SDO abort code is returned if error occurs . (See file def.h)
  */
+ /*
+写入对象字典的接口
+*/
 UNS32 _setODentry( CO_Data* d,
                    UNS16 wIndex,
                    UNS8 bSubindex,
@@ -230,6 +233,7 @@ UNS32 _setODentry( CO_Data* d,
  * - OD_SUCCESSFUL is returned upon success. 
  * - SDO abort code is returned if error occurs . (See file def.h)
  */
+ /*setodentry 将sourcedata从网络字节序转换为机器本地指令，并写给对象字典*/
 #define setODentry( d, wIndex, bSubindex, pSourceData, pExpectedSize, \
                   checkAccess) \
        _setODentry( d, wIndex, bSubindex, pSourceData, pExpectedSize, \
@@ -275,7 +279,14 @@ UNS32 _setODentry( CO_Data* d,
  * @param *errorCode :  OD_SUCCESSFUL if index foundor SDO abort code. (See file def.h)
  * @param **Callback
  * @return NULL if index not found. Else : return the table part of the object dictionary.
+
  */
+ /*
+  简单浏览对象字典索引。仅仅被setODentry 和 getODentry调用
+   d   can对象数据结构的指针
+
+   返回值   如果没有找到返回null，其他返回对象字典的表数据
+*/
  const indextable * scanIndexOD (CO_Data* d, UNS16 wIndex, UNS32 *errorCode, ODCallback_t **Callback);
 
 UNS32 RegisterSetODentryCallBack(CO_Data* d, UNS16 wIndex, UNS8 bSubindex, ODCallback_t Callback);

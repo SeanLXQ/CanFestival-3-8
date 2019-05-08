@@ -36,6 +36,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * Must be coded on 7 bits only
  * */
 /* Should not be modified */
+
+/*节点状态，且不能够被修改*/
 enum enum_nodeState {
   Initialisation  = 0x00, 
   Disconnected    = 0x01,
@@ -64,6 +66,9 @@ typedef struct
  * @brief Function that user app can overload
  * @ingroup statemachine
  */
+
+/*用户可以自定义的函数*/
+/*参数是object data struct*/
 typedef void (*initialisation_t)(CO_Data*);
 typedef void (*preOperational_t)(CO_Data*);
 typedef void (*operational_t)(CO_Data*);
@@ -106,6 +111,8 @@ void _stopped(CO_Data* d);
  * @param *d Pointer on a CAN object data structure
  * @param *m Pointer on a CAN message structure
  */
+ /*当接收到消息时调用的函数
+参数   object data和message structure*/
 void canDispatch(CO_Data* d, Message *m);
 
 /** 
@@ -114,6 +121,8 @@ void canDispatch(CO_Data* d, Message *m);
  * @param *d Pointer on a CAN object data structure
  * @return The node state
  */
+
+/*获取节点状态*/
 e_nodeState getState (CO_Data* d);
 
 /** 
@@ -123,6 +132,9 @@ e_nodeState getState (CO_Data* d);
  * @param newState The state to assign
  * @return 
  */
+
+/*设置节点状态
+参数邋newState为要设置的状态*/
 UNS8 setState (CO_Data* d, e_nodeState newState);
 
 /**
@@ -131,6 +143,8 @@ UNS8 setState (CO_Data* d, e_nodeState newState);
  * @param *d Pointer on a CAN object data structure
  * @return
  */
+
+/*获取节点id*/
 UNS8 getNodeId (CO_Data* d);
 
 /** 
@@ -139,12 +153,17 @@ UNS8 getNodeId (CO_Data* d);
  * @param *d Pointer on a CAN object data structure
  * @param nodeId The node ID to assign
  */
+
+/*设置节点id
+参数nodeid是要设置的id编号*/
 void setNodeId (CO_Data* d, UNS8 nodeId);
 
 /** 
  * @brief Some stuff to do when the node enter in pre-operational mode
  * @param *d Pointer on a CAN object data structure
  */
+
+/*当进入preoperational状态后需要做的事情*/
 void initPreOperationalMode (CO_Data* d);
 
 #endif

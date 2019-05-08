@@ -81,16 +81,29 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 /** This are some structs which are neccessary for creating the entries
  *  of the object dictionary.
  */
+ /*
+ 下面是为对象字典创建的必要的接口
+*/
+
+
+
 typedef struct td_subindex
 {
-    UNS8                    bAccessType;
-    UNS8                    bDataType; /* Defines of what datatype the entry is */
+    UNS8                    bAccessType;/*访问属性*/
+    UNS8                    bDataType; /*数据类型 Defines of what datatype the entry is */
     UNS32                   size;      /* The size (in Byte) of the variable */
-    void*                   pObject;   /* This is the pointer of the Variable */
+    void*                   pObject;   /* 值This is the pointer of the Variable */
 } subindex;
 
 /** Struct for creating entries in the communictaion profile
  */
+ /*
+  在通讯文件里面为接口创建的结构体
+
+  pSubindex:指向子索引的指针
+  pSubCount:子索引可提供的接口总数
+  index:索引
+*/
 typedef struct td_indextable
 {
     subindex*   pSubindex;   /* Pointer to the subindex */
@@ -98,7 +111,7 @@ typedef struct td_indextable
                          * This count here defines how many memory has been
                          * allocated. this memory does not have to be used.
                          */
-    UNS16   index;
+    UNS16   index;/*索引*/
 } indextable;
 
 typedef struct s_quick_index{

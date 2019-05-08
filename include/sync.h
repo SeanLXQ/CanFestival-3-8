@@ -44,6 +44,8 @@ void _post_TPDO(CO_Data* d);
  * @param *d Pointer on a CAN object data structure
  * @return
  */
+ 
+ /*发送同步消息并触发同步tpdo*/
 UNS8 sendSYNC (CO_Data* d);
 
 /** 
@@ -51,6 +53,8 @@ UNS8 sendSYNC (CO_Data* d);
  * @param *d Pointer on a CAN object data structure
  * @return
  */
+
+/*发送同步消息*/
 UNS8 sendSYNCMessage(CO_Data* d);
 
 /** 
@@ -61,6 +65,10 @@ UNS8 sendSYNCMessage(CO_Data* d);
  * @param *d Pointer on a CAN object data structure
  * @return 0 if OK, 0xFF if error 
  */
+ /*当节点收到sync消息的时候 processdSYNC会被调用
+ 检查节点是否在oerational模式，如果是其它模式返回0并且不做任何处理
+ 触发sync tpdo的发送
+*/
 UNS8 proceedSYNC (CO_Data* d);
 
 #endif

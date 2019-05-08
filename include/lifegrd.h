@@ -141,6 +141,8 @@ void heartbeatStop(CO_Data* d);
  * @param *m Pointer on the CAN-message which has to be analysed.
  * @ingroup nodeguardo
  */
+ /*函数用来响应canopen消息反馈的nmt错误信息
+如果bootup信息被探测到，会返回已经启动的slave节点的id*/
 void proceedNODE_GUARD (CO_Data* d, Message* m);
 
 

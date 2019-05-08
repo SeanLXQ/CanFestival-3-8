@@ -73,6 +73,7 @@ void _post_emcy(CO_Data* d, UNS8 nodeID, UNS16 errCode, UNS8 errReg);
  * @param addInfo
  * @return
  */
+ /*根据errcode设置新的错误，同时设置错误寄存器的相应位*/
 UNS8 EMCY_setError(CO_Data* d, UNS16 errCode, UNS8 errRegMask, UNS16 addInfo);
 
 /**
@@ -103,6 +104,7 @@ void emergencyStop(CO_Data* d);
  * @param *d Pointer on a CAN object data structure 
  * @param *m Pointer on the CAN-message which has to be analysed.
  */
+ /*接收到emcy canoepn消息时候的反馈*/
 void proceedEMCY(CO_Data* d, Message* m);
 
 #endif /*__emcy_h__ */

@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 struct struct_s_transfer;
 
-#include "timers.h"
+#include "timer.h"
 
 /* Block mode : Data consumer receive step 
  * - set to RXSTEP_STARTED when client receive initiate upload response 
@@ -53,6 +53,12 @@ Used to store the different segments of
 WARNING : after a change in this structure check the macro s_transfer_Initializer in data.h
 */
 
+/*
+传输结构体
+用来存储不同的段
+在写对象字典之前收到sdo
+从对象字典里面读出并发送出sdo
+*/
 struct struct_s_transfer {
   UNS8           CliServNbr; /**< The index of the SDO client / server in our OD minus 0x1280 / 0x1200 */
 
@@ -110,12 +116,14 @@ typedef struct struct_s_transfer s_transfer;
  * @param *d Pointer on a CAN object data structure
  * @param id
  */
+ /*当超时的时候重置sdo*/
 void SDOTimeoutAlarm(CO_Data* d, UNS32 id);
 
 /** 
  * @brief Reset all SDO buffers.
  * @param *d Pointer on a CAN object data structure
  */
+ /*重置所有的sdo*/
 void resetSDO (CO_Data* d);
 
 
@@ -125,6 +133,7 @@ void resetSDO (CO_Data* d);
  * @param line SDO line
  * @return SDO error code if error. Else, returns 0.
  */
+ /*将从sdo收到的数据转换到对象字典中去*/
 UNS32 SDOlineToObjdict (CO_Data* d, UNS8 line);
 
 /** 
@@ -133,6 +142,7 @@ UNS32 SDOlineToObjdict (CO_Data* d, UNS8 line);
  * @param line SDO line
  * @return SDO error code if error. Else, returns 0.
  */
+ /*将对象字典里面的数据发送给网络接收者*/
 UNS32 objdictToSDOline (CO_Data* d, UNS8 line);
 
 /** 
@@ -263,6 +273,10 @@ UNS8 setSDOlineRestBytes (CO_Data* d, UNS8 line, UNS32 nbBytes);
  * @param data Array of the 8 bytes to transmit
  * @return canSend(bus_id,&m) or 0xFF if error.
  */
+ /*
+ 在总线上传输sdo帧
+ 必须在节点不是operational和preoperational状态的时候
+*/
 UNS8 sendSDO (CO_Data* d, UNS8 whoami, UNS8 CliServNbr, UNS8 *pData);
 
 /** 
@@ -291,6 +305,10 @@ UNS8 sendSDOabort (CO_Data* d, UNS8 whoami, UNS8 CliServNbr, UNS16 index, UNS8 s
  *         - 0x80 if transfer aborted by the server
  *         - 0x0  ok
  */
+ /*
+ 处理sdo帧接收
+ 调用sendSDO函数
+*/
 UNS8 proceedSDO (CO_Data* d, Message *m);
 
 /** 
@@ -329,6 +347,12 @@ UNS8 writeNetworkDict (CO_Data* d, UNS8 nodeId, UNS16 index,
  * - 0xFE is returned when no sdo client to communicate with node.
  * - 0xFF is returned when error occurs.
  */
+ /*
+ 用来发送sdo请求帧，然后写入指定节点的对象字典
+ 需要注意的是:函数调用必须在交换完成之后 成功或者中断了
+ 
+ datatype:strings 写visible_string；0的时候写入整数或者其它值
+*/
 UNS8 writeNetworkDictCallBack (CO_Data* d, UNS8 nodeId, UNS16 index,
 		       UNS8 subIndex, UNS32 count, UNS8 dataType, void *data, SDOCallback_t Callback, UNS8 useBlockMode);
 

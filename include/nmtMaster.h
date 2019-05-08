@@ -58,6 +58,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *                   - 0 if the NMT message was send
  *                   - 1 if an error occurs 
  */
+ /*改变slave的状态*/
+/*
+cs = 0x01;0x02;0x80;0x81;0x82
+*/
 UNS8 masterSendNMTstateChange (CO_Data* d, UNS8 nodeId, UNS8 cs);
 
 /**
@@ -70,6 +74,7 @@ UNS8 masterSendNMTstateChange (CO_Data* d, UNS8 nodeId, UNS8 cs);
  *         - 0 is returned if the NodeGuard message was send.
  *         - 1 is returned if an error occurs.
  */
+ /*对slave发送node guard 信息*/
 UNS8 masterSendNMTnodeguard (CO_Data* d, UNS8 nodeId);
 
 /** 
@@ -80,6 +85,7 @@ UNS8 masterSendNMTnodeguard (CO_Data* d, UNS8 nodeId);
  * @param *d Pointer to a CAN object data structure
  * @param nodeId Id of the slave node
  */
+ /*请求节点id 状*/
 UNS8 masterRequestNodeState (CO_Data* d, UNS8 nodeId);
 
 

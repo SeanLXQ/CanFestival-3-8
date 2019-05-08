@@ -46,9 +46,10 @@ void _RxPDO_EventTimers_Handler(CO_Data *d, UNS32 pdoNum);
 #define PDO_RTR_SYNC_READY 0x01
 
 /** The PDO structure */
+/*PDO结构体*/
 struct struct_s_PDO_status {
   UNS8 transmit_type_parameter;
-  TIMER_HANDLE event_timer;
+  TIMER_HANDLE event_timer;/*事件计时器*/
   TIMER_HANDLE inhibit_timer;
   Message last_message;
 };
@@ -77,6 +78,10 @@ struct struct_s_PDO_status {
  * @param *pdo Pointer on a CAN message structure
  * @return 0 or 0xFF if error.
  */
+ /*复制数据用来传输pdo数据
+d指向canob的指针
+pdo指向can消息结构体的指针
+*/
 UNS8 buildPDO(CO_Data* d, UNS8 numPdo, Message *pdo);
 
 /** 
@@ -90,7 +95,12 @@ UNS8 buildPDO(CO_Data* d, UNS8 numPdo, Message *pdo);
  
  * @return 0xFF if error, other in success.
  */
-UNS8 sendPDOrequest( CO_Data* d, UNS16 RPDOIndex );
+ /*
+ 发送PDO需求框架给slave。
+ d是can对象数据结构体。index是接受pdo
+ 返回值:成功返回文件描述符，失败返回0xff
+*/
+UNS8 sendPDOrequest(CO_Data* d, UNS16 RPDOIndex );
 
 /**
  * @brief Compute a PDO frame reception
@@ -99,6 +109,11 @@ UNS8 sendPDOrequest( CO_Data* d, UNS16 RPDOIndex );
  * @param *m Pointer on a CAN message structure
  * @return 0xFF if error, else return 0
  */
+ /*
+接收pdo数据
+d指向can对象的结构体
+m can消息结构体
+*/
 UNS8 proceedPDO (CO_Data* d, Message *m);
 
 /** 
@@ -109,6 +124,11 @@ UNS8 proceedPDO (CO_Data* d, Message *m);
  * type and content change before sending it.    
  * @param *d Pointer on a CAN object data structure
  */
+ /*
+ 	事件触发
+ 	函数迭代所有的tpdo传输并查看tpdo传输
+ 	
+*/
 UNS8 sendPDOevent (CO_Data* d);
 UNS8 sendOnePDOevent (CO_Data* d, UNS8 pdoNum);
 
@@ -119,6 +139,10 @@ UNS8 sendOnePDOevent (CO_Data* d, UNS8 pdoNum);
  * @param *d Pointer on a CAN object data structure
  * @param isSyncEvent
  */
+ /*
+ 	函数迭代所有的tpdo并查看tpdo传输类型和内容的更改
+ 	isSyncEvent=1 同步 =0异步
+*/
 UNS8 _sendPDOevent(CO_Data* d, UNS8 isSyncEvent);
 
 /** 
@@ -139,6 +163,9 @@ void PDOStop(CO_Data* d);
  * @param *d Pointer on a CAN object data structure
  * @param pdoNum The PDO number
  */
+ /*
+  定时发送pdo
+*/
 void PDOEventTimerAlarm(CO_Data* d, UNS32 pdoNum);
 
 /** 
