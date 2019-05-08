@@ -41,6 +41,9 @@
 ** @param d
 ** @param m
 **/
+/*
+根据master来设置slave的状态
+*/
 void proceedNMTstateChange(CO_Data* d, Message *m)
 {
   if( d->nodeState == Pre_operational ||

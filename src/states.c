@@ -38,7 +38,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 **                                                                                                 
 ** @param d                                                                                        
 ** @param newCommunicationState                                                                    
-**/     
+**/   
+
+/*切换当前节点状态*/
 void switchCommunicationState(CO_Data* d, 
 	s_state_communication *newCommunicationState);
 	
@@ -117,6 +119,14 @@ void canDispatch(CO_Data* d, Message *m)
 	}
 }
 
+
+/*commType ==1 && d->commType == 0 start
+最后会把 对象字典里面的commtype设置为1
+*commType == 0 && d -> commType == 1 stop
+最后会把 对象字典里面的commtype设置为0
+
+
+*/
 #define StartOrStop(CommType, FuncStart, FuncStop) \
 	if(newCommunicationState->CommType && d->CurrentCommunicationState.CommType == 0){\
 		MSG_WAR(0x9999,#FuncStart, 9999);\
@@ -164,6 +174,7 @@ UNS8 setState(CO_Data* d, e_nodeState newState)
 			{
 				s_state_communication newCommunicationState = {1, 0, 0, 0, 0, 0, 0};
 				d->nodeState = Initialisation;
+				/*启动 Boot up*/
 				switchCommunicationState(d, &newCommunicationState);
 				/* call user app init callback now. */
 				/* d->initialisation MUST NOT CALL SetState */
@@ -180,6 +191,9 @@ UNS8 setState(CO_Data* d, e_nodeState newState)
 				
 				s_state_communication newCommunicationState = {0, 1, 1, 1, 1, 0, 1};
 				d->nodeState = Pre_operational;
+				/*
+				启动 sdo,emerygency,sync,lifeguard, lss
+				*/
 				switchCommunicationState(d, &newCommunicationState);
                 (*d->preOperational)(d);
 			}
@@ -191,6 +205,7 @@ UNS8 setState(CO_Data* d, e_nodeState newState)
 				s_state_communication newCommunicationState = {0, 1, 1, 1, 1, 1, 0};
 				d->nodeState = Operational;
 				newState = Operational;
+				/*从 preoperational进入 打开pdo，关闭lss*/
 				switchCommunicationState(d, &newCommunicationState);
 				(*d->operational)(d);
 			}

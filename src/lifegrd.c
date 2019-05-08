@@ -81,6 +81,7 @@ void ConsumerHeartbeatAlarm(CO_Data* d, UNS32 id)
 
 void proceedNODE_GUARD(CO_Data* d, Message* m )
 {
+	/*获取消息的节点id*/
   UNS8 nodeId = (UNS8) GET_NODE_ID((*m));
 
   if((m->rtr == 1) )

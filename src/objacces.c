@@ -1,4 +1,4 @@
-/*
+	/*
   This file is part of CanFestival, a library implementing CanOpen
   Stack.
 
@@ -40,8 +40,13 @@
 
 #include "data.h"
 
+//typedef struct struct_CO_Date CO_DATA
+
+
 //We need the function implementation for linking
 //Only a placeholder with a define isnt enough!
+
+//error print for access to OD
 UNS8 accessDictionaryError(UNS16 index, UNS8 subIndex,
                            UNS32 sizeDataDict, UNS32 sizeDataGiven, UNS32 code)
 {
@@ -182,16 +187,25 @@ UNS32 _setODentry( CO_Data* d,
   UNS32 errorCode;
   const indextable *ptrTable;
   ODCallback_t *Callback;
-
+	/*
+		获取对应通讯结构体的入口值
+		对象字典里面的对象接口
+	*/
   ptrTable =(*d->scanIndexOD)(wIndex, &errorCode, &Callback);
   if (errorCode != OD_SUCCESSFUL)
     return errorCode;
 
+/*
+	如果获取到的对象字典入口 子索引数小于需求数 报错 
+*/
   if( ptrTable->bSubCount <= bSubindex ) {
     /* Subindex not found */
     accessDictionaryError(wIndex, bSubindex, 0, *pExpectedSize, OD_NO_SUCH_SUBINDEX);
     return OD_NO_SUCH_SUBINDEX;
   }
+  /*
+	如果获取到的对象字典入口 子索引权限有问题报错
+*/
   if (checkAccess && (ptrTable->pSubindex[bSubindex].bAccessType == RO)) {
     MSG_WAR(0x2B25, "Access Type : ", ptrTable->pSubindex[bSubindex].bAccessType);
     accessDictionaryError(wIndex, bSubindex, 0, *pExpectedSize, OD_WRITE_NOT_ALLOWED);
@@ -267,6 +281,7 @@ const indextable * scanIndexOD (CO_Data* d, UNS16 wIndex, UNS32 *errorCode, ODCa
   return (*d->scanIndexOD)(wIndex, errorCode, Callback);
 }
 
+//注册对象字典调用函数
 UNS32 RegisterSetODentryCallBack(CO_Data* d, UNS16 wIndex, UNS8 bSubindex, ODCallback_t Callback)
 {
 UNS32 errorCode;

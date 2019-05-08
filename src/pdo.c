@@ -306,6 +306,7 @@ proceedPDO (CO_Data * d, Message * m)
               }                 /* end switch status */
           }                     /* end while */
     }                           /* end if Donnees */
+  /*是一个远程请求帧*/
   else if ((*m).rtr == REQUEST)
     {
       MSG_WAR (0x3946, "Receive a PDO request cobId : ", UNS16_LE(m->cob_id));
@@ -670,10 +671,10 @@ _sendPDOevent (CO_Data * d, UNS8 isSyncEvent)
                   MSG_WAR (0x3964, "  PDO is on SYNCHRO. Trans type : ",
                            *pTransmissionType);
                   memset(&pdo, 0, sizeof(pdo));
-                  /*{
-                    Message msg_init = Message_Initializer;
-                    pdo = msg_init;
-                  }*/
+                  ///*{
+                 //   Message msg_init = Message_Initializer;
+                 //   pdo = msg_init;
+                  //}*/
                   if (buildPDO (d, pdoNum, &pdo))
                     {
                       MSG_ERR (0x1906, " Couldn't build TPDO number : ",
@@ -682,9 +683,9 @@ _sendPDOevent (CO_Data * d, UNS8 isSyncEvent)
                       break;
                     }
                   status = state5;
-                  /* If transmission RTR, with data sampled on SYNC */
-                }
-              else if (isSyncEvent && (*pTransmissionType == TRANS_RTR_SYNC))
+                  	}
+              /* If transmission RTR, with data sampled on SYNC */
+			  else if (isSyncEvent && (*pTransmissionType == TRANS_RTR_SYNC))
                 {
                   if (buildPDO
                       (d, pdoNum, &d->PDO_status[pdoNum].last_message))
